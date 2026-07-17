@@ -1,4 +1,4 @@
-// Add new comment to test webhook
+// This is a trainibf session
 package com.mycompany.orderapp;
 
 public class App {
