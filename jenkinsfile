@@ -1,0 +1,13 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Git Checkout') {
+            steps {
+                echo "Checking out repository..."
+                git branch: 'main', url: 'https://github.com/tosinayodeletf/simple-order-processing-app.git'
+                echo "Git repository successfully checked out"
+            }
+        }
+    }
+}
