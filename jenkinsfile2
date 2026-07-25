@@ -19,7 +19,7 @@ pipeline {
 
                     echo "Moving Maven to /opt/maven"
                     sudo mv apache-maven-3.9.12 /opt/maven
-                    sudo chown -R jenkins:jenkins /opt/maven
+                    sudo chown -R ec2-user:ec2-user /opt/maven
 
                     echo "Maven Installed:"
                     /opt/maven/bin/mvn -version
