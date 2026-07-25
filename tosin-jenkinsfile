@@ -1,0 +1,59 @@
+pipeline {
+    agent any
+
+    environment {
+        MAVEN_VERSION = "3.9.12"
+        MAVEN_HOME   = "/opt/maven"
+        PATH         = "/opt/maven/bin:${PATH}"
+    }
+
+    stages {
+
+        stage('Install Maven') {
+            steps {
+                sh '''
+                    echo "Installing Maven ${MAVEN_VERSION}"
+
+                    sudo rm -rf /opt/maven
+                    cd /tmp
+
+                    echo "Downloading Maven..."
+                    wget https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/${MAVEN_VERSION}/apache-maven-${MAVEN_VERSION}-bin.tar.gz
+
+                    echo "Extracting Maven..."
+                    tar -xzf apache-maven-${MAVEN_VERSION}-bin.tar.gz
+
+                    echo "Moving Maven to /opt/maven"
+                    sudo mv apache-maven-${MAVEN_VERSION} /opt/maven
+                    sudo chown -R ec2-user:ec2-user /opt/maven
+
+                    echo "Maven Installed:"
+                    /opt/maven/bin/mvn -version
+                '''
+            }
+        }
+
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/tosinayodeletf/simple-order-processing-app.git'
+            }
+        }
+
+        stage('Build with Maven') {
+            steps {
+                sh 'mvn clean package -Dmaven.test.failure.ignore=true'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Build Successful — Archiving Artifacts"
+            junit '**/target/surefire-reports/TEST-*.xml'
+            archiveArtifacts 'target/*.jar'
+        }
+        failure {
+            echo "Build Failed"
+        }
+    }
+}
