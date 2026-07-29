@@ -4,7 +4,7 @@ stages {
       stage('Checkout code') {
            steps { 
               git branch: 'main',
-                  url: 'https://github.com/madhuri75jha/simple-order-processing-app.git'
+                  url: 'https://github.com/tosinayodeletf/simple-order-processing-app.git'
      }
    }
        stage('Build') {
