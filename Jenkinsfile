@@ -6,7 +6,7 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        git(branch: 'main', url: 'https://github.com/madhuri75jha/simple-order-processing-app.git')
+        git(branch: 'main', url: 'https://github.com/tosinayodeletf/simple-order-processing-app.git')
       }
     }
 
